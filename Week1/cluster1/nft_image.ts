@@ -13,12 +13,12 @@ const signer = createSignerFromKeypair(umi, keypair);
 umi.use(irysUploader());
 umi.use(signerIdentity(signer));
 
-(async () => {
+const uploadImage = async (imgSrc:string,typeImg:string) => {
     try {
         //1. Load image
-        const image = await readFile("generug.png");
+        const image = await readFile(imgSrc);
         //2. Convert image to generic file.
-        const genericFile = createGenericFile(image, "image/png");
+        const genericFile = createGenericFile(image,typeImg );
         //3. Upload image
         const [myUri] = await umi.uploader.upload([genericFile]);
 
@@ -27,4 +27,15 @@ umi.use(signerIdentity(signer));
     catch(error) {
         console.log("Oops.. Something went wrong", error);
     }
+};
+(async () => {
+    console.log("Image uri of pokeballs");
+    uploadImage("tempImg/pokeballs.jpg", "image/jpg");
+    console.log("Image uri of char");
+    uploadImage("tempImg/char.jpeg", "image/jpeg");
+    console.log("Image uri of bulba");
+    uploadImage("tempImg/bulba.jpeg", "image/jpeg");
+    console.log("Image uri of squir");
+    uploadImage("tempImg/squir.jpeg","image/jpeg");
+
 })();

@@ -17,19 +17,19 @@ umi.use(signerIdentity(signer));
         // Follow this JSON structure
         // https://docs.metaplex.com/programs/token-metadata/changelog/v1.0#json-structure
 
-        const imageURI = "https://arweave.net/tikdBK-SiJsFTPQV1lrA-IWnjc9vdxUPUURcOwtAEGc";
+        const imageURI = "https://arweave.net/31l6YPPbXN7JBlii4Z0UL-U9APJeyJS3v23uuKg85Cc";
         const metadata = {
-            name: "THE RUG",
-            symbol: "RUG",
-            description: "Rug, rug, yes rug",
+            name: "Bulbasaur",
+            symbol: "BLB",
+            description: "The grass type starter",
             image: imageURI,
             attributes: [
-                {trait_type: 'Pattern', value: 'WhiteFLower'}
+                {trait_type: 'Type', value: 'Grass/Poison'},
             ],
             properties: {
                 files: [
                     {
-                        type: "image/png",
+                        type: "image/jpeg",
                         uri: imageURI
                     },
                 ]
