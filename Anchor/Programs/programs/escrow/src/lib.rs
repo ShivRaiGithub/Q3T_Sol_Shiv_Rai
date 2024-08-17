@@ -20,12 +20,10 @@ pub mod escrow {
     pub fn take(ctx: Context<Take>) -> Result<()> {
         ctx.accounts.transfer_to_maker()?; 
         ctx.accounts.withdraw_and_close() 
-        Ok(())
     }
 
     pub fn refund(ctx: Context<Refund>) -> Result<()> {
         ctx.accounts.withdraw_and_close() 
-        Ok(())
     }
 }
 

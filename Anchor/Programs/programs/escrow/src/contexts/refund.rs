@@ -1,6 +1,6 @@
 use anchor_lang::prelude::*;
 
-use anchor_spl::{associated_token::AssociatedToken, token_interface::{Mint, TokenAccount, TokenInterface, TransferChecked, transfer_checked, CloseAccount, close_account}};
+use anchor_spl::{associated_token::AssociatedToken, token_interface::{transfer_checked, Mint, TokenAccount, TokenInterface, TransferChecked, CloseAccount, close_account}};
 
 use crate::Escrow;
 
@@ -14,11 +14,9 @@ pub struct Refund<'info> {
     mint_a: InterfaceAccount<'info, Mint>,
 
     #[account(
-        init_if_needed,
-        payer=maker;
+        mut,
         associated_token::mint = mint_a,
         associated_token::authority = maker,
-        associated_token::Token = token_program
     )]
     maker_ata_a: InterfaceAccount<'info, TokenAccount>,
     #[account(
@@ -32,10 +30,9 @@ pub struct Refund<'info> {
         mut,
         associated_token::mint = mint_a,
         associated_token::authority = escrow,
-        associated_token::Token = token_program
     )]
     vault: InterfaceAccount<'info, TokenAccount>,
-    associated_token_a: Account<'info, AssociatedToken>,
+    associated_token_program: Program<'info, AssociatedToken>,
     token_program: Interface<'info, TokenInterface>,
     system_program: Program<'info, System>,
 }
@@ -45,7 +42,7 @@ impl<'info> Refund <'info>{
     pub fn withdraw_and_close(&mut self)->Result<()>{
         let seed = self.escrow.seed.to_le_bytes();
         let bump = [self.escrow.bump];
-        let signer_seeds = [&[b"escrow"], self.maker.to_account_info().key().as_ref(),&seed.as_ref() , &bump][..];
+        let signer_seeds = [&[b"escrow", self.maker.to_account_info().key.as_ref(),&seed.as_ref() , &bump][..]];
 
         let accounts: TransferChecked = TransferChecked{
             from: self.vault.to_account_info(),
@@ -54,10 +51,10 @@ impl<'info> Refund <'info>{
             authority: self.escrow.to_account_info(),
         };
         
-        let ctx: CpiContext<TransferChecked>=CpiContext::new_with_signer(
-            program: self.token_program.to_account_info(),
+        let ctx = CpiContext::new_with_signer(
+            self.token_program.to_account_info(),
             accounts,
-            signer_seeds
+            &signer_seeds,
         );
 
         transfer_checked(ctx, self.vault.amount,self.mint_a.decimals)?;
@@ -69,7 +66,7 @@ impl<'info> Refund <'info>{
         };
 
         let ctx = CpiContext::new_with_signer(
-            program: self.token_program.to_account_info(),
+            self.token_program.to_account_info(),
             accounts,
             &signer_seeds
         );

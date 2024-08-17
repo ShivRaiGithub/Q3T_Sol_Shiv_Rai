@@ -1,12 +1,13 @@
 use anchor_lang::prelude::*;
 use anchor_spl::{associated_token::AssociatedToken, token_interface::{Mint, TokenAccount, TokenInterface, TransferChecked, transfer_checked}};
 
+use crate::Escrow;
 
 #[derive(Accounts)]
 #[instruction(seed: u64)]
-pub struct Make {
+pub struct Make<'info> {
     #[account(mut)]
-    maker: Signer<'info>,
+    pub maker: Signer<'info>,
     #[account(
         mint::token_program = token_program
     )]
@@ -14,12 +15,11 @@ pub struct Make {
     #[account(
         mint::token_program = token_program
     )]
-    mint_b: InterfaceAccount<'info, MINT>,
+    mint_b: InterfaceAccount<'info, Mint>,
     #[account(
         mut,
         associated_token::mint = mint_a,
         associated_token::authority = maker,
-        associated_token::Token = token_program
     )]
     maker_ata_a: InterfaceAccount<'info, TokenAccount>,
     #[account(
@@ -32,30 +32,29 @@ pub struct Make {
     escrow: Account<'info, Escrow>,
     #[account(
         init_if_needed,
-        payer=maker;
+        payer=maker,
         associated_token::mint = mint_a,
         associated_token::authority = escrow,
-        associated_token::Token = token_program
     )]
     vault: InterfaceAccount<'info, TokenAccount>,
-    associated_token_a: Account<'info, AssociatedToken>,
+    associated_token_program: Program<'info, AssociatedToken>,
     token_program: Interface<'info, TokenInterface>,
     system_program: Program<'info, System>,
 }
 
 
-impl<'info> Make <'info>{
+impl<'info> Make<'info>{
     pub fn save_escrow(&mut self, seed: u64, receive: u64, bump: u8 )->Result<()>{
         self.escrow.set_inner(Escrow{
             seed,
-            maker: self.maker.key,
-            mint_a: self.mint_a.key,
-            mint_b: self.mint_b.key,
+            maker: self.maker.key(),
+            mint_a: self.mint_a.key(),
+            mint_b: self.mint_b.key(),
             receive,
             bump,
         });
         Ok(())
-    };
+    }
 
 
     pub fn deposit_to_vault(&self,amount: u64, )->Result<()>{
@@ -67,7 +66,7 @@ impl<'info> Make <'info>{
         };
         
         let ctx: CpiContext<TransferChecked>=CpiContext::new(
-            program: self.token_program.to_account_info(),
+            self.token_program.to_account_info(),
             accounts
         );
 
@@ -75,5 +74,5 @@ impl<'info> Make <'info>{
 
 
         Ok(())
-    };
+    }
 }

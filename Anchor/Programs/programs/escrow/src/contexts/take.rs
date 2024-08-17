@@ -26,14 +26,14 @@ pub struct Take <'info>
         payer=taker,
         associated_token::mint = mint_a,
         associated_token::authority = taker,
-        associated_token::Token = token_program
+        associated_token::token_program = token_program
     )]
     taker_ata_a: InterfaceAccount<'info, TokenAccount>,
     #[account(
         mut,
         associated_token::mint = mint_b,
         associated_token::authority = taker,
-        associated_token::Token = token_program
+        associated_token::token_program = token_program
     )]
     taker_ata_b: InterfaceAccount<'info, TokenAccount>,
     #[account(
@@ -41,7 +41,7 @@ pub struct Take <'info>
         payer=taker,
         associated_token::mint = mint_b,
         associated_token::authority = maker,
-        associated_token::Token = token_program
+        associated_token::token_program = token_program
     )]
     maker_ata_b: InterfaceAccount<'info, TokenAccount>,
     #[account(
@@ -55,21 +55,23 @@ pub struct Take <'info>
         mut,
         associated_token::mint = mint_a,
         associated_token::authority = escrow,
-        associated_token::Token = token_program
+        associated_token::token_program = token_program
     )]
     vault: InterfaceAccount<'info, TokenAccount>,
-    associated_token_a: Account<'info, AssociatedToken>,
+    associated_token_program: Program<'info, AssociatedToken>,
     token_program: Interface<'info, TokenInterface>,
     system_program: Program<'info, System>,
 }
 
 
 
-imp<'info> Take <'info>{
+impl<'info> Take <'info>{
 pub fn withdraw_and_close(&mut self)->Result<()>{
     let seed = self.escrow.seed.to_le_bytes();
     let bump = [self.escrow.bump];
-    let signer_seeds = [&[b"escrow"], self.maker.to_account_info().key().as_ref(),&seed.as_ref() , &bump][..];
+    // let seed = self.escrow.seed.to_le_bytes();
+    // let bump = [self.escrow.bump];
+    let signer_seeds = [&[b"escrow", self.maker.to_account_info().key.as_ref(),&seed.as_ref() , &bump][..]];
 
     let accounts: TransferChecked = TransferChecked{
         from: self.vault.to_account_info(),
@@ -79,9 +81,9 @@ pub fn withdraw_and_close(&mut self)->Result<()>{
     };
     
     let ctx: CpiContext<TransferChecked>=CpiContext::new_with_signer(
-        program: self.token_program.to_account_info(),
+        self.token_program.to_account_info(),
         accounts,
-        signer_seeds
+        &signer_seeds
     );
 
     transfer_checked(ctx, self.vault.amount,self.mint_a.decimals)?;
@@ -93,13 +95,13 @@ pub fn withdraw_and_close(&mut self)->Result<()>{
     };
 
     let ctx = CpiContext::new_with_signer(
-        program: self.token_program.to_account_info(),
+        self.token_program.to_account_info(),
         accounts,
         &signer_seeds
     );
 
     close_account(ctx)
-};
+}
 
 pub fn transfer_to_maker(&self )->Result<()>{
     let accounts: TransferChecked = TransferChecked{
@@ -110,14 +112,14 @@ pub fn transfer_to_maker(&self )->Result<()>{
     };
     
     let ctx: CpiContext<TransferChecked>=CpiContext::new(
-        program: self.token_program.to_account_info(),
+        self.token_program.to_account_info(),
         accounts
     );
 
-    transfer_checked(ctx, self.escrow.receive,self.mint_b.decimals)?;
+    transfer_checked(ctx, self.escrow.receive, self.mint_b.decimals)?;
 
 
     Ok(())
-};
+}
 
 } 

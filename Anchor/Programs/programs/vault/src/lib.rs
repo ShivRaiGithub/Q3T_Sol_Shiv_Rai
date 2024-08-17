@@ -60,7 +60,7 @@ pub struct Deposit<'info> {
     #[account(
         mut,
         seeds = [b"vault", vault_state.key().as_ref()], 
-        // Our program will be able sign transactions on behalf of the vault account.
+        
         bump = vault_state.vault_bump,
     )]
     pub vault: SystemAccount<'info>,
