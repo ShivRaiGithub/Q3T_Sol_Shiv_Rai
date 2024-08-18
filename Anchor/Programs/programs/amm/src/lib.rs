@@ -12,7 +12,7 @@ pub mod amm {
     use super::*;
 
     pub fn initialize(ctx: Context<Initialize>, seed: u64, fee: u16, amount_x: u64,amount_y: u64 ) -> Result<()> {
-        ctx.accounts.save_config(seed,fee,ctx.bumps.config);
+        let _ = ctx.accounts.save_config(seed,fee,ctx.bumps.config);
         ctx.accounts.deposit(amount_x, true)?;
         ctx.accounts.deposit(amount_y, false)?;
         ctx.accounts.mint_lp_tokens(amount_x, amount_y)?;
