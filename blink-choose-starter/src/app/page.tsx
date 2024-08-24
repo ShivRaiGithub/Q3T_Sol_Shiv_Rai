@@ -27,7 +27,7 @@ export default function Home() {
         </div>
       </div>
 
-      <section className="mt-12 z-10 text-center px-4">
+      <section className="mt-12 z-10 px-4">
         <h2 className="text-3xl font-bold mb-4">About</h2>
         <p className="mb-4">
           This is a Solana-based project that allows users to choose starter Pokémon as NFTs.
