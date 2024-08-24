@@ -37,8 +37,8 @@ export default function Home() {
           <li>Each Pokémon has its own unique NFT associated with it.</li>
           <li>The project uses Solana&apos;s blockchain technology to mint and manage these NFTs.</li>
           <li>
-            Users can interact with the project by visiting: 
-            <a href="https://dial.to" className="text-blue-500 hover:underline"> dial.to</a> and entering the site&apos;s URL + "/api/choose".
+            Users can interact with the project by visiting{' '}
+            <a href="https://dial.to" className="text-blue-500 hover:underline">dial.to</a> and entering the site&apos;s URL + &quot;/api/choose&quot;.
           </li>
           <li>The project runs on the devnet network.</li>
           <li>Ensure you have sufficient funds to cover transaction fees for minting NFTs.</li>
