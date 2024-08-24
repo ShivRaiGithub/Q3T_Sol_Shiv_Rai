@@ -27,7 +27,7 @@ export default function Home() {
         </div>
       </div>
 
-      <section className="mt-12 z-10 px-4">
+      <section className="mt-12 z-10 text-center px-4">
         <h2 className="text-3xl font-bold mb-4">About</h2>
         <p className="mb-4">
           This is a Solana-based project that allows users to choose starter Pokémon as NFTs.
@@ -35,10 +35,10 @@ export default function Home() {
         <ul className="list-disc list-inside mb-4">
           <li>Choose from three starter Pokémon: Charmander, Squirtle, and Bulbasaur.</li>
           <li>Each Pokémon has its own unique NFT associated with it.</li>
-          <li>The project uses Solana's blockchain technology to mint and manage these NFTs.</li>
+          <li>The project uses Solana&apos;s blockchain technology to mint and manage these NFTs.</li>
           <li>
             Users can interact with the project by visiting{' '}
-            <a href="https://dial.to" className="text-blue-500 hover:underline">dial.to</a> and entering the site's URL + "/api/choose".
+            <a href="https://dial.to" className="text-blue-500 hover:underline">dial.to</a> and entering the site&apos;s URL + "/api/choose".
           </li>
           <li>The project runs on the devnet network.</li>
           <li>Ensure you have sufficient funds to cover transaction fees for minting NFTs.</li>
