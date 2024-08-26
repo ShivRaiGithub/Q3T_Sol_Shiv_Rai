@@ -6,6 +6,7 @@ skip-lint = false
 
 [programs.localnet]
 amm = "26QPuoVwHXNWSRsuNj1TJ6M2mRsp1kisBoYKK62VEBkF"
+dice_game = "DEcMDjGz9FMS9bbtHm1CRLP1mYaicvkeUXG6GxBK5jos"
 escrow = "FA3Uy6g115JLqHoBmAxTtYMBDAuT1sdE69wVn7TSZYQR"
 marketplace = "6Y2pjgcBrVZ19PYsTH5L8iopRZMSaUFUR3YUurMYYHAW"
 metaStake = "CWHxW3xWt1iNZ2K2TSiZkZC9wthHaRc35AuX8hYrtQFD"
