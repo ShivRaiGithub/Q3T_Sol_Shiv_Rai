@@ -17,7 +17,8 @@ export async function POST(request: Request) {
   const choice = url.searchParams.get("choice");
 
   if (choice != null && process.env.wallet != null) {
-    const RPC_ENDPOINT = "https://api.devnet.solana.com";
+    const RPC_ENDPOINT = process.env.RPC;
+    if(RPC_ENDPOINT == null){return;}
     const umi = createUmi(RPC_ENDPOINT);
 
     let keypair = umi.eddsa.createKeypairFromSecretKey(new Uint8Array(JSON.parse(process.env.wallet)));
