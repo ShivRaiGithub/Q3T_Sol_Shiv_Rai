@@ -12,17 +12,53 @@ use error::*;
 
 
 #[program]
-pub mod nft_stake {
+pub mod nft_grounds {
 
     use super::*;
 
-    pub fn initialize_config(ctx: Context<InitializeConfig>, points_per_stake: u8, max_stake: u8, freeze_period: u32) -> Result<()> {
-        ctx.accounts.init_config(points_per_stake, max_stake, freeze_period, &ctx.bumps)
+    // ADMIN FUNCTIONS
+    
+    // Initialize marketplace
+    pub fn initialize_marketplace(ctx: Context<InitializeMarketplace>, fee:u16) -> Result<()> {
+        ctx.accounts.initialize_marketplace(fee,&ctx.bumps)?;
+        Ok(())
     }
-    pub fn initialize_account(ctx: Context<Initialize>) -> Result<()> {
+    
+    // Initialize compeition
+    pub fn initialize_competition(ctx: Context<InitializeCompetition>) -> Result<()> {
+        ctx.accounts.init_competition(&ctx.bumps)?;
+        Ok(())
+    }
+
+
+
+    // Start a competition entry of users
+    pub fn start_entry(ctx: Context<CompetitionActions>) -> Result<()> {
+        ctx.accounts.start_centry();
+        Ok(())
+    }
+    
+    // start compeition
+    pub fn start_competition(ctx: Context<CompetitionActions>) -> Result<()> {
+        ctx.accounts.start_competition();
+        Ok(())
+    }
+    
+    // Stop a competition
+    pub fn stop_competition(ctx: Context<CompetitionActions>) -> Result<()> {
+        ctx.accounts.stop_competition();
+        Ok(())
+    }
+    
+    
+    // USER FUNCTIONS
+
+    pub fn initialize_user_account(ctx: Context<InitializeUserAccount>) -> Result<()> {
         ctx.accounts.init_user_account(&ctx.bumps)?;
         Ok(())
     }
+
+
     pub fn stake(ctx: Context<Stake>) -> Result<()> {
         ctx.accounts.stake(&ctx.bumps)?;
         Ok(())
@@ -35,14 +71,7 @@ pub mod nft_stake {
         ctx.accounts.claim()?;
         Ok(())
     }
-}
-pub mod marketplace {
-    use super::*;
 
-    pub fn initialize(ctx: Context<Initialize>, fee:u16, name:String) -> Result<()> {
-        ctx.accounts.init(name,fee,&ctx.bumps)?;
-        Ok(())
-    }
     pub fn list(ctx: Context<List>, price: u64) -> Result<()> {
         ctx.accounts.create_list(price, &ctx.bumps)?;
         ctx.accounts.deposit_nft()

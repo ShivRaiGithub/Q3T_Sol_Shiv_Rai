@@ -11,7 +11,7 @@ pub struct Stake<'info>{
     #[account(mut)]
     pub user: Signer<'info>,
     pub mint: Account<'info, Mint>,
-    pub collection: Account<'info, Mint>,
+    // pub collection: Account<'info, Mint>,
     #[account(
         mut,
         associated_token::mint = mint,
@@ -25,8 +25,8 @@ pub struct Stake<'info>{
             mint.key().as_ref(),
         ],
         seeds::program = metadata_program.key(),
-        constraint = metadata.collection.as_ref().unwrap().key.as_ref()==collection.key().as_ref(),
-        constraint = metadata.collection.as_ref().unwrap().verified == true,
+        // constraint = metadata.collection.as_ref().unwrap().key.as_ref()==collection.key().as_ref(),
+        // constraint = metadata.collection.as_ref().unwrap().verified == true,
         bump,
     )]
     pub metadata:Account<'info, MetadataAccount>,
@@ -104,7 +104,7 @@ impl<'info> Stake<'info>{
             bump: bumps.stake_account,
         });
 
-        self.user_account.amount_staked +=1;
+        self.user_account.nft_in_competition=true;
 
         Ok(())
     }
