@@ -29,6 +29,7 @@ impl<'info>InitializeCompetition<'info>{
     admin:self.admin.key(),
     can_register:false,
     can_vote:false,
+    can_claim:false,
     bump:bumps.competition,
     });
     Ok(())

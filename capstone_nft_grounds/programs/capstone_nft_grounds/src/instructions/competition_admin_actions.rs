@@ -8,9 +8,6 @@ pub struct CompetitionActions<'info>{
     admin: Signer<'info>,
 
     #[account(
-        init,
-        payer=admin,
-        space = Competition::INIT_SPACE,
         seeds=[b"competition",admin.key().as_ref()],
         bump,
     )]
@@ -21,23 +18,31 @@ pub struct CompetitionActions<'info>{
 }
 
 impl<'info>CompetitionActions<'info>{
+    // allow entries
     pub fn start_centry( &mut self )->Result<()>{
     self.competition.can_register = true;
-
     Ok(())
     
 }
+    // stop entries
     pub fn start_competition( &mut self )->Result<()>{
     self.competition.can_register=false;
     self.competition.can_vote=true;
     Ok(())
     
 }
-    pub fn stop_competition( &mut self )->Result<()>{
+    // stop competition
+    pub fn stop_competition_start_claim( &mut self )->Result<()>{
     self.competition.can_vote=false;
-
-    // Add rewards giving part
+    self.competition.can_claim=true;
     Ok(())
+    }
+
+    pub fn stop_claim( &mut self )->Result<()>{
+        self.competition.can_claim=false;
+        // TODO
+        // give rewards to winners
+        Ok(())
     
 }
 

@@ -15,8 +15,9 @@ use error::*;
 pub mod nft_grounds {
 
     use super::*;
-
+    ////////////////////////////////////////
     // ADMIN FUNCTIONS
+    ////////////////////////////////////////
     
     // Initialize marketplace
     pub fn initialize_marketplace(ctx: Context<InitializeMarketplace>, fee:u16) -> Result<()> {
@@ -24,13 +25,11 @@ pub mod nft_grounds {
         Ok(())
     }
     
-    // Initialize compeition
+    // Initialize competition
     pub fn initialize_competition(ctx: Context<InitializeCompetition>) -> Result<()> {
         ctx.accounts.init_competition(&ctx.bumps)?;
         Ok(())
     }
-
-
 
     // Start a competition entry of users
     pub fn start_entry(ctx: Context<CompetitionActions>) -> Result<()> {
@@ -46,37 +45,67 @@ pub mod nft_grounds {
     
     // Stop a competition
     pub fn stop_competition(ctx: Context<CompetitionActions>) -> Result<()> {
-        ctx.accounts.stop_competition();
+        ctx.accounts.stop_competition_start_claim();
         Ok(())
     }
-    
-    
+
+    // Stop period where users claim their rewards
+    pub fn end_rewards_period(ctx: Context<CompetitionActions>) -> Result<()> {
+        ctx.accounts.stop_claim();
+        Ok(())
+    }
+
+
+
+    ////////////////////////////////////////
     // USER FUNCTIONS
+    ////////////////////////////////////////
+
+
+    // HAVE TO WORK FROM HERE
 
     pub fn initialize_user_account(ctx: Context<InitializeUserAccount>) -> Result<()> {
         ctx.accounts.init_user_account(&ctx.bumps)?;
         Ok(())
     }
 
+    // Competition functions
 
-    pub fn stake(ctx: Context<Stake>) -> Result<()> {
+    // user can enter
+    pub fn enter_competition(ctx: Context<Stake>) -> Result<()> {
+
         ctx.accounts.stake(&ctx.bumps)?;
         Ok(())
     }
+
+    // user can vote
     pub fn unstake(ctx: Context<Unstake>) -> Result<()> {
         ctx.accounts.unstake()?;
         Ok(())
     }
-    pub fn claim(ctx: Context<Claim>) -> Result<()> {
+
+    // user claims points ( 1 per vote, rest per ranking)
+    pub fn claim_points(ctx: Context<Claim>) -> Result<()> {
         ctx.accounts.claim()?;
         Ok(())
     }
 
+
+    // Marketplace
+
+    // user can list their nft
     pub fn list(ctx: Context<List>, price: u64) -> Result<()> {
         ctx.accounts.create_list(price, &ctx.bumps)?;
         ctx.accounts.deposit_nft()
     }
+
+    // user can delist
     pub fn delist(ctx: Context<Delist>) -> Result<()> {
         ctx.accounts.withdraw_nft()
+    }
+
+        // user can buy
+    pub fn buy(ctx: Context<Delist>) -> Result<()> {
+    ctx.accounts.withdraw_nft()
     }
 }

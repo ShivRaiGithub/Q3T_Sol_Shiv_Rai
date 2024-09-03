@@ -7,7 +7,7 @@ pub struct Delist<'info> {
     #[account(mut)]
     maker: Signer<'info>,
     #[account(
-        seeds=[b"marketplace",marketplace.name.as_str().as_bytes()],
+        seeds=[b"marketplace",marketplace.admin.as_ref()],
         bump=marketplace.bump,
     )]
     marketplace: Box<Account<'info, Marketplace>>,

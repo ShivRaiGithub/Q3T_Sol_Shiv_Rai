@@ -13,5 +13,8 @@ pub use user_account::*;
 pub mod competition;
 pub use competition::*;
 
+pub mod ranking;
+pub use ranking::*;
+
 // pub mod stake_account;
 // pub use stake_account::*;
