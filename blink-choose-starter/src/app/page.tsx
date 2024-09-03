@@ -44,7 +44,7 @@ export default function Home() {
           <li>The project runs on the devnet network.</li>
           <li>Ensure you have sufficient funds to cover transaction fees for minting NFTs.</li>
           <li>The project is using wallet account FyMeRo1DnkhSSQLEAmH8CyvMTXMFEvUddQ6aH5F4U5YM to cover minting costs.</li>
-          <li>If you encounter issues, try sending some devnet SOL to the wallet account above.</li>
+          <li>If you are unable to mint despite enough funds, try sending some devnet SOL to the wallet account above.</li>
         </ul>
       </section>
     </main>
