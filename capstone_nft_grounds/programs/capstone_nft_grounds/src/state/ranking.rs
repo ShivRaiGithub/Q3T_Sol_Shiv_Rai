@@ -7,8 +7,10 @@ pub struct Ranking{
     pub third: Pubkey,
     pub hon1: Pubkey,
     pub hon2: Pubkey,
+    pub bump: u8, // Bump
+
 }
 
 impl Space for Ranking {
-    const INIT_SPACE:usize = 8+32*5;
+    const INIT_SPACE:usize = 8+32*5 + 1;
 }

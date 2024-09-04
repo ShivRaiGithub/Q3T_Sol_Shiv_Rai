@@ -18,7 +18,7 @@ pub struct InitializeMarketplace<'info>{
 }
 
 impl<'info>InitializeMarketplace<'info>{
-    pub fn initialize_marketplace(
+    pub fn init_marketplace(
         &mut self, 
         fee: u16,
         bumps: &InitializeMarketplaceBumps )->Result<()>{

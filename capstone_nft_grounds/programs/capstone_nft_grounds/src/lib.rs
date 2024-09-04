@@ -21,13 +21,18 @@ pub mod nft_grounds {
     
     // Initialize marketplace
     pub fn initialize_marketplace(ctx: Context<InitializeMarketplace>, fee:u16) -> Result<()> {
-        ctx.accounts.initialize_marketplace(fee,&ctx.bumps)?;
+        ctx.accounts.init_marketplace(fee,&ctx.bumps)?;
         Ok(())
     }
     
     // Initialize competition
     pub fn initialize_competition(ctx: Context<InitializeCompetition>) -> Result<()> {
         ctx.accounts.init_competition(&ctx.bumps)?;
+        Ok(())
+    }
+    // Initialize ranking
+    pub fn initialize_ranking(ctx: Context<InitializeRanking>) -> Result<()> {
+        ctx.accounts.init_ranking(&ctx.bumps)?;
         Ok(())
     }
 
@@ -73,14 +78,13 @@ pub mod nft_grounds {
 
     // user can enter
     pub fn enter_competition(ctx: Context<Stake>) -> Result<()> {
-
         ctx.accounts.stake(&ctx.bumps)?;
         Ok(())
     }
 
     // user can vote
-    pub fn unstake(ctx: Context<Unstake>) -> Result<()> {
-        ctx.accounts.unstake()?;
+    pub fn vote(ctx: Context<Vote>) -> Result<()> {
+        ctx.accounts.vote()?;
         Ok(())
     }
 
