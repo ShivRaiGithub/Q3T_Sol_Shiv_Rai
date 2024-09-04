@@ -29,3 +29,9 @@ pub use competition_admin_actions::*;
 
 pub mod init_ranking;
 pub use init_ranking::*;
+
+pub mod vote;
+pub use vote::*;
+
+pub mod buy;
+pub use buy::*;

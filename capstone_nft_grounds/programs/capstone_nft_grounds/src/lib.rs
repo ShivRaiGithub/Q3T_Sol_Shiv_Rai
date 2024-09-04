@@ -14,6 +14,8 @@ use error::*;
 #[program]
 pub mod nft_grounds {
 
+    use instruction::EnterCompetition;
+
     use super::*;
     ////////////////////////////////////////
     // ADMIN FUNCTIONS
@@ -61,24 +63,23 @@ pub mod nft_grounds {
     }
 
 
-
     ////////////////////////////////////////
     // USER FUNCTIONS
     ////////////////////////////////////////
 
 
-    // HAVE TO WORK FROM HERE
-
+    
     pub fn initialize_user_account(ctx: Context<InitializeUserAccount>) -> Result<()> {
         ctx.accounts.init_user_account(&ctx.bumps)?;
         Ok(())
     }
-
+    
     // Competition functions
-
+    
+    // HAVE TO WORK FROM HERE
     // user can enter
-    pub fn enter_competition(ctx: Context<Stake>) -> Result<()> {
-        ctx.accounts.stake(&ctx.bumps)?;
+    pub fn enter_competition(ctx: Context<EnterCompetition>) -> Result<()> {
+        ctx.accounts.enter(&ctx.bumps)?;
         Ok(())
     }
 
@@ -106,10 +107,12 @@ pub mod nft_grounds {
     // user can delist
     pub fn delist(ctx: Context<Delist>) -> Result<()> {
         ctx.accounts.withdraw_nft()
+        
     }
 
-        // user can buy
-    pub fn buy(ctx: Context<Delist>) -> Result<()> {
-    ctx.accounts.withdraw_nft()
+    // user can buy
+    pub fn buy(ctx: Context<Buy>) -> Result<()> {
+    ctx.accounts.buy();
+    ctx.accounts.transfer_nft()
     }
 }

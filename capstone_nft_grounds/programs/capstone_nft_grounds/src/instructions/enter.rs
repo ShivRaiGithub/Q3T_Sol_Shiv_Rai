@@ -3,15 +3,23 @@ use anchor_spl::{metadata::{mpl_token_metadata::instructions::
 {FreezeDelegatedAccountCpi, FreezeDelegatedAccountCpiAccounts}, MasterEditionAccount,
 Metadata, MetadataAccount}, token::{approve, Approve, Mint, Token, TokenAccount}};
 
-use crate::{state:: {StakeAccount, StakeConfig, UserAccount},error::ErrorCode};
+use crate::state:: {UserAccount, StakeAccount};
 
 
 #[derive(Accounts)]
-pub struct Stake<'info>{
+pub struct EnterCompetition<'info>{
     #[account(mut)]
     pub user: Signer<'info>,
     pub mint: Account<'info, Mint>,
-    // pub collection: Account<'info, Mint>,
+
+    #[account(
+        mut,
+        seeds=[b"user".as_ref(), user.key().as_ref()],
+        bump=user_account.bump,
+    )]
+    pub user_account: Account<'info, UserAccount>,
+
+
     #[account(
         mut,
         associated_token::mint = mint,
@@ -25,8 +33,6 @@ pub struct Stake<'info>{
             mint.key().as_ref(),
         ],
         seeds::program = metadata_program.key(),
-        // constraint = metadata.collection.as_ref().unwrap().key.as_ref()==collection.key().as_ref(),
-        // constraint = metadata.collection.as_ref().unwrap().verified == true,
         bump,
     )]
     pub metadata:Account<'info, MetadataAccount>,
@@ -43,31 +49,29 @@ pub struct Stake<'info>{
             bump,
         )]
     pub edition:Account<'info, MasterEditionAccount>,
-    pub config: Account<'info, StakeConfig>,
-    #[account(
-        mut,
-        seeds=[b"user".as_ref(), user.key().as_ref()],
-        bump=user_account.bump,
-    )]
-    pub user_account: Account<'info, UserAccount>,
+
+
+    // pub config: Account<'info, StakeConfig>,
+
 
     #[account(
         init,
         payer=user,
         space=StakeAccount::INIT_SPACE,
-        seeds = [b"stake".as_ref(), mint.key().as_ref() ,config.key().as_ref()],
+        seeds = [b"stake".as_ref(), mint.key().as_ref()],
         bump
     )]
     pub stake_account: Account<'info, StakeAccount>,
+
+
     pub system_program: Program<'info, System>,
     pub token_program: Program<'info, Token>,
     pub metadata_program:Program<'info, Metadata>,
 }
 
-impl<'info> Stake<'info>{
-    pub fn stake(&mut self, bumps: &StakeBumps) -> Result<()>{
-        require!(self.user_account.amount_staked < self.config.max_stake, ErrorCode::MaxStakes);
-
+impl<'info> EnterCompetition<'info>{
+    pub fn enter(&mut self, bumps: &EnterCompetitionBumps) -> Result<()> {
+        // require!(self.user_account.amount_staked < self.config.max_stake, ErrorCode::MaxStakes);
 
         let cpi_program = self.token_program.to_account_info();
         let cpi_accounts = Approve {
@@ -100,7 +104,7 @@ impl<'info> Stake<'info>{
         self.stake_account.set_inner(StakeAccount{
             owner: self.user.key(),
             mint: self.mint.key(),
-            last_update: Clock::get()?.unix_timestamp,
+            votes:0,
             bump: bumps.stake_account,
         });
 
