@@ -1,4 +1,7 @@
-use anchor_lang::prelude::*;
+use anchor_lang::{
+    prelude::*,
+    system_program::{transfer, Transfer},
+};
 use anchor_spl::{
     associated_token::AssociatedToken,
     token_interface::{
@@ -7,33 +10,23 @@ use anchor_spl::{
     },
 };
 
-use crate::{Listing, Marketplace, UserAccount};
+use crate::{Listing, Marketplace};
 
 #[derive(Accounts)]
 #[instruction(name: String)]
-pub struct Buy<'info> {
+pub struct Purchase<'info> {
     #[account(mut)]
     pub taker: Signer<'info>,
+
     #[account(mut)]
     pub maker: SystemAccount<'info>,
-
-    #[account(
-        seeds=[b"user".as_ref(), maker.key().as_ref()],
-        bump,
-    )]
-    pub maker_account: Account<'info, UserAccount>,
-    #[account(
-        seeds=[b"user".as_ref(), taker.key().as_ref()],
-        bump,
-    )]
-    pub taker_account: Account<'info, UserAccount>,
-
 
     #[account(
         seeds=[b"marketplace", name.as_bytes()],
         bump
     )]
     pub marketplace: Box<Account<'info, Marketplace>>,
+
     pub maker_mint: Box<InterfaceAccount<'info, Mint>>,
 
     #[account(
@@ -43,6 +36,7 @@ pub struct Buy<'info> {
         associated_token::authority = taker,
     )]
     pub taker_ata: Box<InterfaceAccount<'info, TokenAccount>>,
+
     #[account(
         mut,
         close = maker,
@@ -59,6 +53,11 @@ pub struct Buy<'info> {
     )]
     pub vault: Box<InterfaceAccount<'info, TokenAccount>>,
 
+    #[account(
+        seeds = [b"treasury", marketplace.key().as_ref()],
+        bump = marketplace.treasury_bump,
+    )]
+    treasury: SystemAccount<'info>,
 
     pub associated_token_program: Program<'info, AssociatedToken>,
 
@@ -67,11 +66,33 @@ pub struct Buy<'info> {
     pub system_program: Program<'info, System>,
 }
 
-impl<'info> Buy<'info> {
-    pub fn buy(&mut self) -> Result<()> {
-        self.maker_account.points-=self.listing.price;
-        self.taker_account.points+=self.listing.price;
-        Ok(())
+impl<'info> Purchase<'info> {
+    pub fn make_payment(&self) -> Result<()> {
+        let accounts = Transfer {
+            from: self.taker.to_account_info(),
+            to: self.maker.to_account_info(),
+        };
+
+        let cpi_ctx = CpiContext::new(self.system_program.to_account_info(), accounts);
+
+        let amount = self
+            .listing
+            .price
+            .checked_mul(self.marketplace.fee as u64)
+            .unwrap()
+            .checked_div(10000)
+            .unwrap();
+
+        transfer(cpi_ctx, self.listing.price - amount)?;
+
+        let accounts = Transfer {
+            from: self.taker.to_account_info(),
+            to: self.treasury.to_account_info(),
+        };
+
+        let cpi_ctx = CpiContext::new(self.system_program.to_account_info(), accounts);
+
+        transfer(cpi_ctx, amount)
     }
 
     pub fn transfer_nft(&mut self) -> Result<()> {

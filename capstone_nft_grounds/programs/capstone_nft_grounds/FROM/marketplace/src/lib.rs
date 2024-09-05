@@ -24,4 +24,8 @@ pub mod marketplace {
     pub fn delist(ctx: Context<Delist>) -> Result<()> {
         ctx.accounts.withdraw_nft()
     }
+    pub fn purchase(ctx: Context<Purchase>) -> Result<()> {
+        ctx.accounts.make_payment()?;
+        ctx.accounts.transfer_nft()
+    }
 }

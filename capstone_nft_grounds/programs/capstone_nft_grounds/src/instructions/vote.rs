@@ -15,7 +15,7 @@ pub struct Vote<'info>{
         bump=user_account.bump,
     )]
     pub user_account: Account<'info, UserAccount>,
-
+    // TODO change this somehow
     pub mint: Account<'info, Mint>,
     #[account(
         seeds = [b"stake".as_ref(), mint.key().as_ref()],

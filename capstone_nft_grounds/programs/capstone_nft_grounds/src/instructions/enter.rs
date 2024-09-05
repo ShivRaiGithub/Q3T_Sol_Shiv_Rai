@@ -5,7 +5,6 @@ Metadata, MetadataAccount}, token::{approve, Approve, Mint, Token, TokenAccount}
 
 use crate::state:: {UserAccount, StakeAccount};
 
-
 #[derive(Accounts)]
 pub struct EnterCompetition<'info>{
     #[account(mut)]
@@ -72,6 +71,8 @@ pub struct EnterCompetition<'info>{
 impl<'info> EnterCompetition<'info>{
     pub fn enter(&mut self, bumps: &EnterCompetitionBumps) -> Result<()> {
         // require!(self.user_account.amount_staked < self.config.max_stake, ErrorCode::MaxStakes);
+        
+        self.user_account.nft_in_competition=true;
 
         let cpi_program = self.token_program.to_account_info();
         let cpi_accounts = Approve {
@@ -108,7 +109,6 @@ impl<'info> EnterCompetition<'info>{
             bump: bumps.stake_account,
         });
 
-        self.user_account.nft_in_competition=true;
 
         Ok(())
     }
