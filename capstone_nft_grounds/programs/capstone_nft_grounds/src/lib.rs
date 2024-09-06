@@ -8,7 +8,6 @@ pub mod error;
 
 use instructions::*;
 use state::*;
-use error::*;
 
 
 #[program]
@@ -22,14 +21,14 @@ pub mod nft_grounds {
     ////////////////////////////////////////
     
     // Initialize marketplace
-    pub fn initialize_marketplace(ctx: Context<InitializeMarketplace>, fee:u16) -> Result<()> {
-        ctx.accounts.init_marketplace(fee,&ctx.bumps)?;
+    pub fn initialize_marketplace(ctx: Context<InitializeMarketplace>) -> Result<()> {
+        ctx.accounts.init_marketplace(&ctx.bumps)?;
         Ok(())
     }
     
     // Initialize competition
-    pub fn initialize_competition(ctx: Context<InitializeCompetition>) -> Result<()> {
-        ctx.accounts.init_competition(&ctx.bumps)?;
+    pub fn initialize_competition(ctx: Context<InitializeCompetition>,fee:u16) -> Result<()> {
+        ctx.accounts.init_competition(fee,&ctx.bumps)?;
         Ok(())
     }
     // Initialize ranking
@@ -67,7 +66,6 @@ pub mod nft_grounds {
     // USER FUNCTIONS
     ////////////////////////////////////////
 
-
     
     pub fn initialize_user_account(ctx: Context<InitializeUserAccount>) -> Result<()> {
         ctx.accounts.init_user_account(&ctx.bumps)?;
@@ -78,6 +76,7 @@ pub mod nft_grounds {
     
     // HAVE TO WORK FROM HERE
     // user can enter
+    // fee is required to enter
     pub fn enter_competition(ctx: Context<EnterCompetition>) -> Result<()> {
         ctx.accounts.enter(&ctx.bumps)?;
         Ok(())

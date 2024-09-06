@@ -49,9 +49,7 @@ pub struct EnterCompetition<'info>{
         )]
     pub edition:Account<'info, MasterEditionAccount>,
 
-
     // pub config: Account<'info, StakeConfig>,
-
 
     #[account(
         init,
@@ -61,7 +59,6 @@ pub struct EnterCompetition<'info>{
         bump
     )]
     pub stake_account: Account<'info, StakeAccount>,
-
 
     pub system_program: Program<'info, System>,
     pub token_program: Program<'info, Token>,
@@ -108,7 +105,6 @@ impl<'info> EnterCompetition<'info>{
             votes:0,
             bump: bumps.stake_account,
         });
-
 
         Ok(())
     }

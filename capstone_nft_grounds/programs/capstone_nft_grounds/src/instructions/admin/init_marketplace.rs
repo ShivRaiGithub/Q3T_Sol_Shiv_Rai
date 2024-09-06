@@ -20,11 +20,9 @@ pub struct InitializeMarketplace<'info>{
 impl<'info>InitializeMarketplace<'info>{
     pub fn init_marketplace(
         &mut self, 
-        fee: u16,
         bumps: &InitializeMarketplaceBumps )->Result<()>{
     self.marketplace.set_inner(Marketplace{
     admin:self.admin.key(),
-    fee,
     bump:bumps.marketplace,
     });
     Ok(())

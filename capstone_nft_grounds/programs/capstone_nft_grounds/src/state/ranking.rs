@@ -13,7 +13,6 @@ pub struct Ranking{
     pub hon2: Pubkey,
     pub hon2Votes: u64,
     pub bump: u8, // Bump
-
 }
 
 impl Space for Ranking {

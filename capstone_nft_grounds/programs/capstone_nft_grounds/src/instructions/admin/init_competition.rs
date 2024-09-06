@@ -15,7 +15,6 @@ pub struct InitializeCompetition<'info>{
         bump,
     )]
     competition: Account<'info, Competition>,
-
     system_program: Program<'info, System>
 
 }
@@ -23,6 +22,7 @@ pub struct InitializeCompetition<'info>{
 impl<'info>InitializeCompetition<'info>{
     pub fn init_competition(
         &mut self,
+        fee: u16,
         bumps: &InitializeCompetitionBumps )->Result<()>{
     
     self.competition.set_inner(Competition{
@@ -30,6 +30,7 @@ impl<'info>InitializeCompetition<'info>{
     can_register:false,
     can_vote:false,
     can_claim:false,
+    fee,
     bump:bumps.competition,
     });
     Ok(())
