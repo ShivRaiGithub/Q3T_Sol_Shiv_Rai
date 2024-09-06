@@ -17,7 +17,6 @@ pub struct CompetitionActions<'info>{
         bump,
     )]
     ranking: Account<'info, Ranking>,
-
     system_program: Program<'info, System>
 
 }

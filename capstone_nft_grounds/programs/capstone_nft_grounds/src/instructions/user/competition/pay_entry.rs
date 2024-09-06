@@ -20,7 +20,7 @@ pub struct PayEntry<'info> {
     pub admin: UncheckedAccount<'info>,  // Admin is just a public key, not a data account
 
     #[account(
-        seeds = [b"marketplace", name.as_bytes()],
+        seeds = [b"competition", competition.admin.key().as_ref()],
         bump
     )]
     pub competition: Box<Account<'info, Competition>>,
@@ -37,7 +37,8 @@ impl<'info> PayEntry<'info> {
             to: self.admin.to_account_info(),
         };
         let cpi_ctx = CpiContext::new(self.system_program.to_account_info(), accounts);
-        let amount = LAMPORTS_PER_SOL * self.competition.fee as u64;
+        // TODO better way to calc amount ?
+        let amount = (LAMPORTS_PER_SOL * self.competition.fee as u64)/10000;
         transfer(cpi_ctx, amount)?;
 
         // Set user account to have paid entry fees

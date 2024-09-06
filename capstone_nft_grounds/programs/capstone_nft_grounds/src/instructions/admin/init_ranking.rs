@@ -29,16 +29,13 @@ impl<'info>InitializeRanking<'info>{
 
 
     self.ranking.set_inner(Ranking{
+        admin: self.admin.key(),
         first: zero_pubkey,
         firstVotes: 0,
         second: zero_pubkey,
         secondVotes: 0,
         third: zero_pubkey,
         thirdVotes: 0,
-        // hon1: zero_pubkey,
-        // hon1Votes: 0,
-        // hon2: zero_pubkey,
-        // hon2Votes: 0,
         bump: bumps.ranking,
     });
     Ok(())

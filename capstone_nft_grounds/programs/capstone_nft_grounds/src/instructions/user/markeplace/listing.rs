@@ -1,7 +1,6 @@
 use anchor_lang::prelude::*;
 use anchor_spl::{
     token_interface::{TokenAccount, Mint, TokenInterface, TransferChecked, transfer_checked},
-    // metadata::{Metadata, MetadataAccount, MasterEditionAccount},
     associated_token::AssociatedToken
 };
 use crate::state::{Listing, Marketplace};
@@ -39,32 +38,6 @@ pub struct List<'info> {
     )]
     vault: Box<InterfaceAccount<'info, TokenAccount>>,
 
-    // #[account(
-    //     seeds=[
-    //         b"metadata",
-    //         metadata_program.key().as_ref(),
-    //         maker_mint.key().as_ref()
-    //     ],
-    //     seeds::program=metadata_program.key(),
-    //     bump,
-    //     constraint = metadata.collection.as_ref().unwrap().key.as_ref()==collection_mint.key().as_ref(),
-    //     constraint = metadata.collection.as_ref().unwrap().verified==true,
-
-    // )]
-    // metadata: Box<Account<'info, MetadataAccount>>,
-
-    // #[account(
-    //     seeds=[
-    //         b"edition",
-    //         metadata_program.key().as_ref(),
-    //         maker_mint.key().as_ref()
-    //     ],
-    //     seeds::program=metadata_program.key(),
-    //     bump
-    // )]
-    // master_edition: Box<Account<'info, MasterEditionAccount>>,
-
-    // metadata_program: Program<'info, Metadata>,
     associated_token_program: Program<'info, AssociatedToken>,
     system_program: Program<'info, System>,
     token_program: Interface<'info, TokenInterface>,

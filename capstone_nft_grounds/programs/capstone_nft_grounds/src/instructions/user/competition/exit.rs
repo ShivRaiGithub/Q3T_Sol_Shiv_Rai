@@ -93,8 +93,8 @@ impl<'info> Exit<'info>{
         let cpi_ctx = CpiContext::new(cpi_program, cpi_accounts);
         revoke(cpi_ctx)?;
 
-        // set stake account
-        self.stake_account.mint = self.mint.key();
+        // reset stake account
+        self.stake_account.mint = Pubkey::from([0u8; 32]);
         self.stake_account.votes = 0;
 
         Ok(())

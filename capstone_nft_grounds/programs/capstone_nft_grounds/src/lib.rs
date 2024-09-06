@@ -107,7 +107,6 @@ pub mod nft_grounds {
     }
 
     // Marketplace
-
     // user can list their nft
     pub fn list(ctx: Context<List>, price: u64) -> Result<()> {
         ctx.accounts.create_list(price, &ctx.bumps)?;

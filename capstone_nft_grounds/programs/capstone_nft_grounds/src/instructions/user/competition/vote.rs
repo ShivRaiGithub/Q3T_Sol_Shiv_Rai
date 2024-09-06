@@ -7,11 +7,6 @@ pub struct Vote<'info>{
     #[account(mut)]
     pub user: Signer<'info>,
 
-    /// CHECK: This is safe 
-    pub admin: UncheckedAccount<'info>,  // Admin is just a public key, not a data account
-    /// CHECK: This is safe 
-    pub contestant: UncheckedAccount<'info>,  // contestant is just a public key, not a data account
-
     #[account(
         mut,
         seeds=[b"user".as_ref(), user.key().as_ref()],
@@ -20,13 +15,13 @@ pub struct Vote<'info>{
     pub user_account: Account<'info, UserAccount>,
 
     #[account(
-        seeds = [b"stake".as_ref(), contestant.key().as_ref()],
+        seeds = [b"stake".as_ref(), stake_account.owner.key().as_ref()],
         bump = stake_account.bump,
     )]
     pub stake_account: Account<'info, StakeAccount>,
 
     #[account(
-        seeds=[b"ranking",admin.key().as_ref()],
+        seeds=[b"ranking",ranking.admin.key().as_ref()],
         bump=ranking.bump,
     )]
     ranking: Account<'info, Ranking>,
@@ -42,7 +37,7 @@ impl<'info> Vote<'info>{
     self.stake_account.votes += 1;
 
     let contestant_votes = self.stake_account.votes;
-    let contestant_key = self.contestant.key();
+    let contestant_key = self.stake_account.owner.key();
 
     // Adjust ranking based on the new vote count of the contestant
     if contestant_votes > self.ranking.firstVotes {

@@ -14,16 +14,13 @@ pub user: Signer<'info>,
 )]
 pub user_account: Account<'info, UserAccount>,
 
-/// CHECK: This is safe 
-pub admin: UncheckedAccount<'info>,  // Admin is just a public key, not a data account
-
 #[account(
     seeds = [b"stake".as_ref(), user.key().as_ref()],
     bump,
 )]
 pub stake_account: Account<'info, StakeAccount>,
 #[account(
-    seeds=[b"ranking",admin.key().as_ref()],
+    seeds=[b"ranking",ranking.admin.key().as_ref()],
     bump,
 )]
 ranking: Account<'info, Ranking>,
