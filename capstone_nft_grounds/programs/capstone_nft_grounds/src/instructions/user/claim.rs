@@ -22,7 +22,9 @@ pub token_program: Program<'info, Token>,
 
 impl<'info>Claim<'info>{
     pub fn claim(&mut self)->Result<()>{
-        
+        if self.user_account.voted == true{
+            self.user_account. points += 1;
+        }
         
         // TODO assign points based on claimer and reset the required
         Ok(())

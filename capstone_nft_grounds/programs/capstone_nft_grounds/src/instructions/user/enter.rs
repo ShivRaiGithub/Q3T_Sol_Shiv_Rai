@@ -52,7 +52,8 @@ pub struct EnterCompetition<'info>{
         init,
         payer=user,
         space=StakeAccount::INIT_SPACE,
-        seeds = [b"stake".as_ref(), mint.key().as_ref()],
+        // Taking user key in stake instead of mint
+        seeds = [b"stake".as_ref(), user.key().as_ref()],
         bump
     )]
     pub stake_account: Account<'info, StakeAccount>,

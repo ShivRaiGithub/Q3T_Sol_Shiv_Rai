@@ -14,6 +14,8 @@ pub struct InitializeRanking<'info>{
         bump,
     )]
     ranking: Account<'info, Ranking>,
+
+    
     system_program: Program<'info, System>,
 }
 
@@ -33,10 +35,10 @@ impl<'info>InitializeRanking<'info>{
         secondVotes: 0,
         third: zero_pubkey,
         thirdVotes: 0,
-        hon1: zero_pubkey,
-        hon1Votes: 0,
-        hon2: zero_pubkey,
-        hon2Votes: 0,
+        // hon1: zero_pubkey,
+        // hon1Votes: 0,
+        // hon2: zero_pubkey,
+        // hon2Votes: 0,
         bump: bumps.ranking,
     });
     Ok(())
