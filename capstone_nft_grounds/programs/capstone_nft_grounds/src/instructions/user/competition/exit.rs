@@ -63,6 +63,7 @@ impl<'info> Exit<'info>{
 
     pub fn exit(&mut self) -> Result<()> {  
         // set the user account to be in competition
+        self.user_account.paid_entry_fees=false;
         self.user_account.nft_in_competition=false;
 
         let delegate = &self.stake_account.to_account_info();

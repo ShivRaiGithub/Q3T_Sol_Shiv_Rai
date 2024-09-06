@@ -1,6 +1,6 @@
 use anchor_lang::prelude::*;
 use anchor_spl::token_interface::{Mint, TokenAccount, TokenInterface, TransferChecked, transfer_checked};
-use crate::state::{Listing,Marketplace};
+use crate::{state::{Listing,Marketplace}, UserAccount};
 
 #[derive(Accounts)]
 pub struct Delist<'info> {
@@ -11,6 +11,14 @@ pub struct Delist<'info> {
         bump=marketplace.bump,
     )]
     marketplace: Box<Account<'info, Marketplace>>,
+
+    #[account(
+        mut,
+        seeds=[b"user".as_ref(), maker.key().as_ref()],
+        bump=user_account.bump,
+    )]
+    pub user_account: Account<'info, UserAccount>,
+
     maker_mint:Box<InterfaceAccount<'info, Mint>>,
     #[account(
         mut,
@@ -41,6 +49,8 @@ pub struct Delist<'info> {
 impl <'info> Delist<'info> {
 
     pub fn withdraw_nft(&mut self) ->Result<()>{
+        // Update user account
+        self.user_account.nft_in_market = false;
 
         let seeds=&[
             &self.marketplace.key().to_bytes()[..],

@@ -34,7 +34,7 @@ impl<'info>Claim<'info>{
     pub fn claim(&mut self)->Result<()>{
         // 1 Point to all voters
         if self.user_account.voted == true{
-            self.user_account. points += 1;
+            self.user_account.points += 1;
             self.user_account.voted = false;
         }
         

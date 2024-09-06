@@ -4,11 +4,11 @@ use anchor_lang::prelude::*;
 pub struct Ranking{
     pub admin : Pubkey,
     pub first: Pubkey,
-    pub firstVotes: u64,
+    pub first_votes: u64,
     pub second: Pubkey,
-    pub secondVotes: u64,
+    pub second_votes: u64,
     pub third: Pubkey,
-    pub thirdVotes: u64,
+    pub third_votes: u64,
     pub bump: u8, // Bump
 }
 

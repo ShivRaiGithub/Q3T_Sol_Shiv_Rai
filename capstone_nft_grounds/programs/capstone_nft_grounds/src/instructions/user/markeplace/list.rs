@@ -3,7 +3,7 @@ use anchor_spl::{
     token_interface::{TokenAccount, Mint, TokenInterface, TransferChecked, transfer_checked},
     associated_token::AssociatedToken
 };
-use crate::state::{Listing, Marketplace};
+use crate::{state::{Listing, Marketplace}, UserAccount};
 
 #[derive(Accounts)]
 pub struct List<'info> {
@@ -14,6 +14,14 @@ pub struct List<'info> {
         bump=marketplace.bump,
     )]
     marketplace: Box<Account<'info, Marketplace>>,
+
+    #[account(
+        mut,
+        seeds=[b"user".as_ref(), maker.key().as_ref()],
+        bump=user_account.bump,
+    )]
+    pub user_account: Account<'info, UserAccount>,
+
     maker_mint:Box<InterfaceAccount<'info, Mint>>,
     #[account(
         mut,
@@ -26,7 +34,7 @@ pub struct List<'info> {
     init,
     payer=maker,
     space=Listing::INIT_SPACE,
-    seeds=[marketplace.key().as_ref(), maker_mint.key().as_ref()],
+    seeds=[b"listing",marketplace.key().as_ref(), maker_mint.key().as_ref()],
     bump,
 )]
     listing:Box<Account<'info, Listing>>,
@@ -46,16 +54,16 @@ pub struct List<'info> {
 
 impl <'info> List<'info> {
     pub fn create_list(&mut self, price: u64, bumps: &ListBumps)->Result<()>{
+        // Update user account
+        self.user_account.nft_in_market = true;
+        // Create Listing
         self.listing.set_inner(Listing{
             maker:self.maker.key(),
             mint:self.maker_mint.key(),
             price,
             bump:bumps.listing
         });
-        Ok(())
-    }
-
-    pub fn deposit_nft(&mut self) ->Result<()>{
+        // Transfer NFT to vault
         let account = TransferChecked{
             from: self.maker_ata.to_account_info(),
             to: self.vault.to_account_info(),

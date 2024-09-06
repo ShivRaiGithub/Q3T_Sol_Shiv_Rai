@@ -33,7 +33,6 @@ impl<'info>InitializeUserAccount<'info>{
             points: 0,
             nft_in_market: false,
             paid_entry_fees: false,
-            registered: false,
             nft_in_competition: false,
             voted: false,
             bump: bumps.user_account,

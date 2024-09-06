@@ -40,29 +40,29 @@ impl<'info> Vote<'info>{
     let contestant_key = self.stake_account.owner.key();
 
     // Adjust ranking based on the new vote count of the contestant
-    if contestant_votes > self.ranking.firstVotes {
+    if contestant_votes > self.ranking.first_votes {
         // Move down previous rankings
         self.ranking.third = self.ranking.second;
-        self.ranking.thirdVotes = self.ranking.secondVotes;
+        self.ranking.third_votes = self.ranking.second_votes;
 
         self.ranking.second = self.ranking.first;
-        self.ranking.secondVotes = self.ranking.firstVotes;
+        self.ranking.second_votes = self.ranking.first_votes;
 
         // Update first place with current contestant
         self.ranking.first = contestant_key;
-        self.ranking.firstVotes = contestant_votes;
-    } else if contestant_votes > self.ranking.secondVotes {
+        self.ranking.first_votes = contestant_votes;
+    } else if contestant_votes > self.ranking.second_votes {
         // Move down previous second place to third
         self.ranking.third = self.ranking.second;
-        self.ranking.thirdVotes = self.ranking.secondVotes;
+        self.ranking.third_votes = self.ranking.second_votes;
 
         // Update second place with current contestant
         self.ranking.second = contestant_key;
-        self.ranking.secondVotes = contestant_votes;
-    } else if contestant_votes > self.ranking.thirdVotes {
+        self.ranking.second_votes = contestant_votes;
+    } else if contestant_votes > self.ranking.third_votes {
         // Update third place with current contestant
         self.ranking.third = contestant_key;
-        self.ranking.thirdVotes = contestant_votes;
+        self.ranking.third_votes = contestant_votes;
     }
 
     Ok(())

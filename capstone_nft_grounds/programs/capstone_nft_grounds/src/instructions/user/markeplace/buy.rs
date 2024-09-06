@@ -6,7 +6,6 @@ use anchor_spl::{
         TransferChecked,
     },
 };
-
 use crate::{Listing, Marketplace, UserAccount};
 
 #[derive(Accounts)]
@@ -28,7 +27,6 @@ pub struct Buy<'info> {
     )]
     pub taker_account: Account<'info, UserAccount>,
 
-
     #[account(
         seeds=[b"marketplace", name.as_bytes()],
         bump
@@ -46,7 +44,7 @@ pub struct Buy<'info> {
     #[account(
         mut,
         close = maker,
-        seeds=[b"listing", maker_mint.key().as_ref()],
+        seeds=[b"listing", marketplace.key().as_ref(), maker_mint.key().as_ref()],
         bump,
     )]
     pub listing: Box<Account<'info, Listing>>,
@@ -67,8 +65,9 @@ pub struct Buy<'info> {
 
 impl<'info> Buy<'info> {
     pub fn buy(&mut self) -> Result<()> {
-        self.maker_account.points-=self.listing.price;
-        self.taker_account.points+=self.listing.price;
+        self.maker_account.nft_in_market = false;
+        self.maker_account.points+=self.listing.price;
+        self.taker_account.points-=self.listing.price;
         Ok(())
     }
 
