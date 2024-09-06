@@ -100,6 +100,10 @@ pub mod nft_grounds {
         Ok(())
     }
 
+    pub fn claim_back_nft(ctx: Context<Exit>) -> Result<()> {
+        ctx.accounts.exit()?;
+        Ok(())
+    }
 
     // Marketplace
 
@@ -112,7 +116,6 @@ pub mod nft_grounds {
     // user can delist
     pub fn delist(ctx: Context<Delist>) -> Result<()> {
         ctx.accounts.withdraw_nft()
-        
     }
 
     // user can buy

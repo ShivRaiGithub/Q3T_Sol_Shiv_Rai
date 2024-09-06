@@ -6,7 +6,7 @@ Metadata, MetadataAccount}, token::{approve, Approve, Mint, Token, TokenAccount}
 use crate::state:: {UserAccount, StakeAccount};
 
 #[derive(Accounts)]
-pub struct EnterCompetition<'info>{
+pub struct Exit<'info>{
     #[account(mut)]
     pub user: Signer<'info>,
     pub mint: Account<'info, Mint>,
@@ -59,9 +59,9 @@ pub struct EnterCompetition<'info>{
     pub metadata_program:Program<'info, Metadata>,
 }
 
-impl<'info> EnterCompetition<'info>{
+impl<'info> Exit<'info>{
 
-    pub fn enter(&mut self) -> Result<()> {
+    pub fn exit(&mut self) -> Result<()> {
         // set the user account to be in competition
         self.user_account.nft_in_competition=true;
 
@@ -94,9 +94,9 @@ impl<'info> EnterCompetition<'info>{
             },
         ).invoke()?;
 
+        // set stake account
         self.stake_account.mint = self.mint.key();
         self.stake_account.votes = 0;
-
 
         Ok(())
     }

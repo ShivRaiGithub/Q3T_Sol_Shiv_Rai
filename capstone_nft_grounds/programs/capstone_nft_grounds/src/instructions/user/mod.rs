@@ -24,3 +24,6 @@ pub use buy::*;
 
 pub mod pay_entry;
 pub use pay_entry::*;
+
+pub mod exit;
+pub use exit::*;
