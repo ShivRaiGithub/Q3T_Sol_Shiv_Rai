@@ -23,6 +23,7 @@ pub token_program: Program<'info, Token>,
 impl<'info>Claim<'info>{
     pub fn claim(&mut self)->Result<()>{
         
+        
         // TODO assign points based on claimer and reset the required
         Ok(())
 

@@ -5,6 +5,7 @@ use anchor_lang::prelude::*;
 pub struct UserAccount{
     pub points: u64, // Points balance
     pub nft_in_market: bool, // NFT in market
+    pub paid_entry_fees: bool,
     pub registered: bool, // Registered
     pub nft_in_competition: bool, // NFT in competition
     pub voted: bool, // Voted in competition

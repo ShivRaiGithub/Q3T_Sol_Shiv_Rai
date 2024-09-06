@@ -21,3 +21,6 @@ pub use vote::*;
 
 pub mod buy;
 pub use buy::*;
+
+pub mod pay_entry;
+pub use pay_entry::*;

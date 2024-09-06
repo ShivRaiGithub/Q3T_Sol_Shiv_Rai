@@ -36,7 +36,6 @@ pub struct EnterCompetition<'info>{
     )]
     pub metadata:Account<'info, MetadataAccount>,
     
-    
     #[account(
         seeds= [
             b"metadata",
@@ -48,8 +47,6 @@ pub struct EnterCompetition<'info>{
             bump,
         )]
     pub edition:Account<'info, MasterEditionAccount>,
-
-    // pub config: Account<'info, StakeConfig>,
 
     #[account(
         init,
@@ -66,18 +63,18 @@ pub struct EnterCompetition<'info>{
 }
 
 impl<'info> EnterCompetition<'info>{
+
     pub fn enter(&mut self, bumps: &EnterCompetitionBumps) -> Result<()> {
-        // require!(self.user_account.amount_staked < self.config.max_stake, ErrorCode::MaxStakes);
-        
+        // set the user account to be in competition
         self.user_account.nft_in_competition=true;
 
+        // Approve permission to stake account
         let cpi_program = self.token_program.to_account_info();
         let cpi_accounts = Approve {
                 to: self.mint_ata.to_account_info(),
                 delegate: self.stake_account.to_account_info(),
                 authority: self.user.to_account_info(),
         };
-
         let cpi_ctx = CpiContext::new(cpi_program, cpi_accounts);
         approve(cpi_ctx, 1)?;
 
@@ -88,6 +85,7 @@ impl<'info> EnterCompetition<'info>{
         let token_program = &self.token_program.to_account_info();
         let metadata_program = &self.metadata_program.to_account_info();
 
+        // Freeze the delegated account
         FreezeDelegatedAccountCpi::new(
             metadata_program,
             FreezeDelegatedAccountCpiAccounts{
@@ -99,6 +97,7 @@ impl<'info> EnterCompetition<'info>{
             },
         ).invoke()?;
 
+        // set stake account
         self.stake_account.set_inner(StakeAccount{
             owner: self.user.key(),
             mint: self.mint.key(),

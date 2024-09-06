@@ -21,6 +21,7 @@ impl<'info>InitializeUserAccount<'info>{
         self.user_account.set_inner(UserAccount{
             points: 0,
             nft_in_market: false,
+            paid_entry_fees: false,
             registered: false,
             nft_in_competition: false,
             voted: false,

@@ -61,9 +61,7 @@ pub struct Buy<'info> {
 
 
     pub associated_token_program: Program<'info, AssociatedToken>,
-
     pub token_program: Interface<'info, TokenInterface>,
-
     pub system_program: Program<'info, System>,
 }
 

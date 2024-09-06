@@ -19,7 +19,7 @@ pub mod nft_grounds {
     ////////////////////////////////////////
     // ADMIN FUNCTIONS
     ////////////////////////////////////////
-    
+
     // Initialize marketplace
     pub fn initialize_marketplace(ctx: Context<InitializeMarketplace>) -> Result<()> {
         ctx.accounts.init_marketplace(&ctx.bumps)?;
@@ -73,8 +73,14 @@ pub mod nft_grounds {
     }
     
     // Competition functions
+
+    // user pays entry fee
+    pub fn pay_entry(ctx: Context<PayEntry>) -> Result<()> {
+        ctx.accounts.pay_entry_fees();
+        Ok(())
+    }
     
-    // HAVE TO WORK FROM HERE
+    // Error here ???
     // user can enter
     // fee is required to enter
     pub fn enter_competition(ctx: Context<EnterCompetition>) -> Result<()> {
@@ -82,7 +88,7 @@ pub mod nft_grounds {
         Ok(())
     }
 
-    // user can vote
+    // user votes
     pub fn vote(ctx: Context<Vote>) -> Result<()> {
         ctx.accounts.vote()?;
         Ok(())
