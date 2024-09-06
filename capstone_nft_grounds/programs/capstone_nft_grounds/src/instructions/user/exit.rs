@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 use anchor_spl::{metadata::{mpl_token_metadata::instructions::
-{FreezeDelegatedAccountCpi, FreezeDelegatedAccountCpiAccounts}, MasterEditionAccount,
-Metadata, MetadataAccount}, token::{approve, Approve, Mint, Token, TokenAccount}};
+{ThawDelegatedAccountCpi, ThawDelegatedAccountCpiAccounts}, MasterEditionAccount,
+Metadata, MetadataAccount}, token::{revoke, Revoke, Mint, Token, TokenAccount}};
 
 use crate::state:: {UserAccount, StakeAccount};
 
@@ -61,19 +61,9 @@ pub struct Exit<'info>{
 
 impl<'info> Exit<'info>{
 
-    pub fn exit(&mut self) -> Result<()> {
+    pub fn exit(&mut self) -> Result<()> {  
         // set the user account to be in competition
-        self.user_account.nft_in_competition=true;
-
-        // Approve permission to stake account
-        let cpi_program = self.token_program.to_account_info();
-        let cpi_accounts = Approve {
-                to: self.mint_ata.to_account_info(),
-                delegate: self.stake_account.to_account_info(),
-                authority: self.user.to_account_info(),
-        };
-        let cpi_ctx = CpiContext::new(cpi_program, cpi_accounts);
-        approve(cpi_ctx, 1)?;
+        self.user_account.nft_in_competition=false;
 
         let delegate = &self.stake_account.to_account_info();
         let token_account = &self.mint_ata.to_account_info();
@@ -82,10 +72,9 @@ impl<'info> Exit<'info>{
         let token_program = &self.token_program.to_account_info();
         let metadata_program = &self.metadata_program.to_account_info();
 
-        // Freeze the delegated account
-        FreezeDelegatedAccountCpi::new(
+        ThawDelegatedAccountCpi::new(
             metadata_program,
-            FreezeDelegatedAccountCpiAccounts{
+            ThawDelegatedAccountCpiAccounts{
                 delegate,
                 token_account,
                 edition,
@@ -93,6 +82,16 @@ impl<'info> Exit<'info>{
                 token_program,
             },
         ).invoke()?;
+
+        
+        let cpi_program = self.token_program.to_account_info();
+        let cpi_accounts = Revoke {
+                source: self.mint_ata.to_account_info(),
+                authority: self.stake_account.to_account_info(),
+            };
+
+        let cpi_ctx = CpiContext::new(cpi_program, cpi_accounts);
+        revoke(cpi_ctx)?;
 
         // set stake account
         self.stake_account.mint = self.mint.key();

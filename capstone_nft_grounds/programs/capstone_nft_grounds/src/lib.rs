@@ -16,6 +16,7 @@ pub mod nft_grounds {
     use instruction::EnterCompetition;
 
     use super::*;
+
     ////////////////////////////////////////
     // ADMIN FUNCTIONS
     ////////////////////////////////////////
@@ -99,7 +100,7 @@ pub mod nft_grounds {
         ctx.accounts.claim()?;
         Ok(())
     }
-
+    // user claim back their nft
     pub fn claim_back_nft(ctx: Context<Exit>) -> Result<()> {
         ctx.accounts.exit()?;
         Ok(())
