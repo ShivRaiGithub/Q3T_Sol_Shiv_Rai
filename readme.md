@@ -25,10 +25,11 @@ This folder contains my capstone project for the WBA Turbin3 Q3 Builders cohort.
 
 ## How to Use This Repo
 
-1. **Clone the repo**:
-   ```bash
-   git clone https://github.com/ShivRaiGithub/Q3T_Sol_Shiv_Rai.git
-   ```
+1. **Clone the repo using ```git clone```**:
+2. **Choose the folder**
+3. **Download required files(if any) using yarn or npm**
+4. **Run the project/program**
+
 
 ## Prerequisites
 - Node.js and npm for TypeScript projects.
