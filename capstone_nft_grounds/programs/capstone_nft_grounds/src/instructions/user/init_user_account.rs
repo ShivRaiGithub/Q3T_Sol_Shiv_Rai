@@ -32,7 +32,7 @@ impl<'info>InitializeUserAccount<'info>{
         self.user_account.set_inner(UserAccount{
             points: 0,
             nft_in_market: false,
-            paid_entry_fees: false,
+            paid_entry_fees: false, 
             nft_in_competition: false,
             voted: false,
             bump: bumps.user_account,
@@ -41,8 +41,6 @@ impl<'info>InitializeUserAccount<'info>{
         // set stake account
         self.stake_account.owner=self.user.key();
         self.stake_account.bump=bumps.stake_account;
-
-
         Ok(())
     }
 }
