@@ -50,8 +50,6 @@ impl<'info>Claim<'info>{
         }
 
         Ok(())
-
     }
-
 }
 
