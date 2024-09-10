@@ -1,6 +1,7 @@
 use anchor_lang::prelude::*;
 
 use crate::state:: {UserAccount, StakeAccount, Ranking};
+use crate::error::UserError;
 
 #[derive(Accounts)]
 pub struct Vote<'info>{
@@ -30,6 +31,7 @@ pub struct Vote<'info>{
 
 impl<'info> Vote<'info>{
    pub fn vote(&mut self) -> Result<()> {
+    require!(self.user_account.voted == false, UserError::Voted);
     // Mark user as having voted
     self.user_account.voted = true;
 

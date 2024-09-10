@@ -7,6 +7,8 @@ use anchor_spl::{
     },
 };
 use crate::{Listing, Marketplace, UserAccount};
+use crate::error::UserError;
+
 
 #[derive(Accounts)]
 #[instruction(name: String)]
@@ -65,6 +67,7 @@ pub struct Buy<'info> {
 
 impl<'info> Buy<'info> {
     pub fn buy(&mut self) -> Result<()> {
+        require!(self.listing.price <= self.taker_account.points, UserError::NotEnoughPoints);
         self.maker_account.nft_in_market = false;
         self.maker_account.points+=self.listing.price;
         self.taker_account.points-=self.listing.price;

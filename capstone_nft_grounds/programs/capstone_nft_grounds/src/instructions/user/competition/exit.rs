@@ -4,7 +4,7 @@ use anchor_spl::{metadata::{mpl_token_metadata::instructions::
 Metadata, MetadataAccount}, token::{revoke, Revoke, Mint, Token, TokenAccount}};
 
 use crate::state:: {UserAccount, StakeAccount};
-
+use crate::error::UserError;
 #[derive(Accounts)]
 pub struct Exit<'info>{
     #[account(mut)]
@@ -62,6 +62,7 @@ pub struct Exit<'info>{
 impl<'info> Exit<'info>{
 
     pub fn exit(&mut self) -> Result<()> {  
+        require!(self.user_account.nft_in_competition == true, UserError::NotEntered);
         // set the user account to be in competition
         self.user_account.paid_entry_fees=false;
         self.user_account.nft_in_competition=false;

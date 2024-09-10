@@ -12,6 +12,10 @@ pub enum CompetitionError{
 
 #[error_code]
 pub enum UserError{
+    #[msg("Not enough Points")]
+    NotEnoughPoints,
+    #[msg("Not In Competition")]
+    NotEntered,
     #[msg("Entry Fees already paid")]
     FeesPaid,
     #[msg("NFT already in competition")]
@@ -19,5 +23,5 @@ pub enum UserError{
     #[msg("NFT already in market")]
     NftInMarket,
     #[msg("Voted already")]
-    CantClaim
+    Voted,
 }

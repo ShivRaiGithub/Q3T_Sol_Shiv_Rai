@@ -2,7 +2,7 @@ use anchor_lang::{
     prelude::*, solana_program::native_token::LAMPORTS_PER_SOL, system_program::{transfer, Transfer}
 };
 
-use crate::{Competition, UserAccount};
+use crate::{{Competition, UserAccount},error::UserError};
 
 #[derive(Accounts)]
 #[instruction(name: String)]
@@ -31,6 +31,7 @@ pub struct PayEntry<'info> {
 impl<'info> PayEntry<'info> {
     // Make payment for entry fees
     pub fn pay_entry_fees(&mut self) -> Result<()> {
+        require!(self.user_account.paid_entry_fees == false, UserError::FeesPaid);
         // Transfer amount
         let accounts = Transfer {
             from: self.user.to_account_info(),

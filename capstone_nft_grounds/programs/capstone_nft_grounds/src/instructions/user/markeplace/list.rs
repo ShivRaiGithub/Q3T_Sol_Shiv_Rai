@@ -4,6 +4,7 @@ use anchor_spl::{
     associated_token::AssociatedToken
 };
 use crate::{state::{Listing, Marketplace}, UserAccount};
+use crate::error::UserError;
 
 #[derive(Accounts)]
 pub struct List<'info> {
@@ -54,6 +55,7 @@ pub struct List<'info> {
 
 impl <'info> List<'info> {
     pub fn create_list(&mut self, price: u64, bumps: &ListBumps)->Result<()>{
+        require!(self.user_account.nft_in_market == false, UserError::NftInMarket);
         // Update user account
         self.user_account.nft_in_market = true;
         // Create Listing
