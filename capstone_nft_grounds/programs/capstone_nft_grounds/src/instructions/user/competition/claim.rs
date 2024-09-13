@@ -1,11 +1,17 @@
 use anchor_lang::prelude::*;
 use anchor_spl::{associated_token::AssociatedToken, token::Token};
-use crate::{state::UserAccount, Ranking, StakeAccount};
+use crate::{state::UserAccount, Ranking, StakeAccount,Competition};
 
 #[derive(Accounts)]
 pub struct Claim<'info>{
 #[account(mut)]
 pub user: Signer<'info>,
+
+#[account(
+    seeds=[b"competition",competition.number.to_le_bytes().as_ref(),competition.admin.key().as_ref()],
+    bump
+)]
+pub competition: Box<Account<'info, Competition>>,
 
 #[account(
     mut,
@@ -34,8 +40,8 @@ impl<'info>Claim<'info>{
     pub fn claim(&mut self)->Result<()>{
         // 1 Point to all voters
         if self.user_account.voted == true{
-            self.user_account.points += 1;
             self.user_account.voted = false;
+            self.user_account.points += 1;
         }
         
         // Assign extra points to the top 3 users

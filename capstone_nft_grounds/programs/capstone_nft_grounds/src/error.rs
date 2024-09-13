@@ -22,6 +22,8 @@ pub enum UserError{
     NftInCompetition,
     #[msg("NFT already in market")]
     NftInMarket,
+    #[msg("NFT not in market")]
+    NftNotInMarket,
     #[msg("Voted already")]
     Voted,
 }

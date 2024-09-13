@@ -7,7 +7,7 @@ pub struct CompetitionActions<'info>{
     admin: Signer<'info>,
 
     #[account(
-        seeds=[b"competition",admin.key().as_ref()],
+        seeds=[b"competition",competition.number.to_le_bytes().as_ref(),admin.key().as_ref()],
         bump,
     )]
     competition: Account<'info, Competition>,

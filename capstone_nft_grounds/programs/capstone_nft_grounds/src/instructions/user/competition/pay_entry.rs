@@ -20,7 +20,7 @@ pub struct PayEntry<'info> {
     pub admin: UncheckedAccount<'info>,  // Admin is just a public key, not a data account
 
     #[account(
-        seeds = [b"competition", competition.admin.key().as_ref()],
+        seeds=[b"competition",competition.number.to_le_bytes().as_ref(),competition.admin.key().as_ref()],
         bump
     )]
     pub competition: Box<Account<'info, Competition>>,

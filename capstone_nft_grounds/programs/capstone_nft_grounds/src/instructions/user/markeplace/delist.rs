@@ -1,6 +1,7 @@
 use anchor_lang::prelude::*;
 use anchor_spl::token_interface::{Mint, TokenAccount, TokenInterface, TransferChecked, transfer_checked};
 use crate::{state::{Listing,Marketplace}, UserAccount};
+use crate::error::UserError;
 
 #[derive(Accounts)]
 pub struct Delist<'info> {
@@ -49,6 +50,7 @@ pub struct Delist<'info> {
 impl <'info> Delist<'info> {
 
     pub fn withdraw_nft(&mut self) ->Result<()>{
+        require!(self.user_account.nft_in_market==true,UserError::NftNotInMarket);
         // Update user account
         self.user_account.nft_in_market = false;
 

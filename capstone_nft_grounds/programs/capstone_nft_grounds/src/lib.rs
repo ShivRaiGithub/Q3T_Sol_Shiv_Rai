@@ -25,8 +25,8 @@ pub mod nft_grounds {
     }
     
     // Initialize competition
-    pub fn initialize_competition(ctx: Context<InitializeCompetition>,fee:u16) -> Result<()> {
-        ctx.accounts.init_competition(fee,&ctx.bumps)
+    pub fn initialize_competition(ctx: Context<InitializeCompetition>, num:u64, fee:u16) -> Result<()> {
+        ctx.accounts.init_competition(num,fee,&ctx.bumps)
     }
     // Initialize ranking
     pub fn initialize_ranking(ctx: Context<InitializeRanking>) -> Result<()> {

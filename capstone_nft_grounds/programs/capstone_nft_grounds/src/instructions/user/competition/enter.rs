@@ -3,7 +3,7 @@ use anchor_spl::{metadata::{mpl_token_metadata::instructions::
 {FreezeDelegatedAccountCpi, FreezeDelegatedAccountCpiAccounts}, MasterEditionAccount,
 Metadata, MetadataAccount}, token::{approve, Approve, Mint, Token, TokenAccount}};
 
-use crate::state:: {UserAccount, StakeAccount};
+use crate::state:: {UserAccount, StakeAccount,Competition};
 use crate::error::UserError;
 
 #[derive(Accounts)]
@@ -18,7 +18,12 @@ pub struct EnterCompetition<'info>{
         bump=user_account.bump,
     )]
     pub user_account: Account<'info, UserAccount>,
-
+    
+    #[account(
+        seeds=[b"competition",competition.number.to_le_bytes().as_ref(),competition.admin.key().as_ref()],
+        bump
+    )]
+    pub competition: Box<Account<'info, Competition>>,
 
     #[account(
         mut,

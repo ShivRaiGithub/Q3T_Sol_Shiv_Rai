@@ -1,12 +1,18 @@
 use anchor_lang::prelude::*;
 
-use crate::state:: {UserAccount, StakeAccount, Ranking};
+use crate::state:: {UserAccount, StakeAccount, Ranking,Competition};
 use crate::error::UserError;
 
 #[derive(Accounts)]
 pub struct Vote<'info>{
     #[account(mut)]
     pub user: Signer<'info>,
+
+        #[account(
+        seeds=[b"competition",competition.number.to_le_bytes().as_ref(),competition.admin.key().as_ref()],
+        bump
+    )]
+    pub competition: Box<Account<'info, Competition>>,
 
     #[account(
         mut,
