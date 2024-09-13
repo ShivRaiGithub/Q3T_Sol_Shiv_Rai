@@ -41,7 +41,7 @@ impl<'info>CompetitionActions<'info>{
     self.competition.can_claim=true;
     Ok(())
     }
-
+    // ASK : should I stop claim phase ?
     // stop claiming phase
     pub fn stop_claim( &mut self )->Result<()>{
         self.competition.can_claim=false;

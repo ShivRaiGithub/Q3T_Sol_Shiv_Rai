@@ -32,6 +32,8 @@ impl<'info> PayEntry<'info> {
     // Make payment for entry fees
     pub fn pay_entry_fees(&mut self) -> Result<()> {
         require!(self.user_account.paid_entry_fees == false, UserError::FeesPaid);
+        // ASK : Is this check necessary?
+        require!(self.competition.admin.key()==self.admin.key(), UserError::WrongAddress);
         // Transfer amount
         let accounts = Transfer {
             from: self.user.to_account_info(),

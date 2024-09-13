@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 use anchor_spl::{associated_token::AssociatedToken, token::Token};
 use crate::{state::UserAccount, Ranking, StakeAccount,Competition};
-
+use crate::error::CompetitionError;
 #[derive(Accounts)]
 pub struct Claim<'info>{
 #[account(mut)]
@@ -38,6 +38,8 @@ pub token_program: Program<'info, Token>,
 
 impl<'info>Claim<'info>{
     pub fn claim(&mut self)->Result<()>{
+        require!(self.competition.can_claim==true, CompetitionError::CantClaim);
+
         // 1 Point to all voters
         if self.user_account.voted == true{
             self.user_account.voted = false;

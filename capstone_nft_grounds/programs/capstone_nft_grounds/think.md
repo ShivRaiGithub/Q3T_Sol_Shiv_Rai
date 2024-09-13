@@ -16,7 +16,3 @@ voted : 1
 1 : 5
 2 : 4
 3 : 3
-
-
-
-TODO : add competition to all related stuff and add checks
