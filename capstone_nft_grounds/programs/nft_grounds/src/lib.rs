@@ -8,7 +8,6 @@ pub mod error;
 
 use instructions::*;
 use state::*;
-use error::*;
 
 #[program]
 pub mod nft_grounds {
