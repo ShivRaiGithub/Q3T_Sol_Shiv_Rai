@@ -7,7 +7,7 @@ use crate::state::Bet;
 pub struct PlaceBet<'info>{
     #[account(mut)]
     pub player:Signer<'info>,
-    //CHECK : THIS IS SAFE
+    /// CHECK : This is safe
     pub house: UncheckedAccount<'info>,
     #[account(
         mut,

@@ -9,7 +9,7 @@ pub const HOUSE_EDGE:u16=150;
 pub struct ResolveBet<'info>{
     #[account(mut)]
     pub house:Signer<'info>,
-    //CHECK: this is safe
+    /// CHECK: this is safe
     pub player:UncheckedAccount<'info>,
 
     #[account(
@@ -28,6 +28,7 @@ pub struct ResolveBet<'info>{
     #[account(
         address=solana_program::sysvar::instructions::ID,
     )]
+    /// CHECK: This is safe
     pub instruction_sysvar: AccountInfo<'info>,
     pub system_program:Program<'info,System>,
   }

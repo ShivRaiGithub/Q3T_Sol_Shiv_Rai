@@ -191,6 +191,7 @@ pub struct Stake<'info> {
     )]
     pub collection: Account<'info, BaseCollectionV1>,
     #[account(address= MPL_CORE_ID)]
+    /// CHECK: this is safe
     pub mpl_core_program: UncheckedAccount<'info>,
     pub system_program: Program<'info, System>,
 
