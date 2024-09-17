@@ -20,6 +20,8 @@ pub enum UserError{
     NotEntered,
     #[msg("Entry Fees already paid")]
     FeesPaid,
+    #[msg("Entry Fees not paid")]
+    FeesNotPaid,
     #[msg("Wrong Admin Address")]
     WrongAddress,
     #[msg("NFT already in competition")]

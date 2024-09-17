@@ -70,8 +70,10 @@ impl<'info> EnterCompetition<'info>{
     pub fn enter(&mut self) -> Result<()> {
         require!(self.competition.can_register==true, CompetitionError::CantRegister);
         require!(self.user_account.nft_in_competition==false, UserError::NftInCompetition);
+        require!(self.user_account.paid_entry_fees==true, UserError::FeesNotPaid);
         // set the user account to be in competition
         self.user_account.nft_in_competition=true;
+        self.user_account.paid_entry_fees==false;
 
         // Approve permission to stake account
         let cpi_program = self.token_program.to_account_info();
@@ -101,7 +103,6 @@ impl<'info> EnterCompetition<'info>{
                 token_program,
             },
         ).invoke()?;
-
         self.stake_account.mint = self.mint.key();
         self.stake_account.votes = 0;
 

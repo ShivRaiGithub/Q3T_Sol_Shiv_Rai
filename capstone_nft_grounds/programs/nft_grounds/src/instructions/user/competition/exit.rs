@@ -68,7 +68,8 @@ impl<'info> Exit<'info>{
     pub fn exit(&mut self) -> Result<()> {  
         require!(self.competition.can_claim == true, CompetitionError::CantClaim);
         require!(self.user_account.nft_in_competition == true, UserError::NotEntered);
-        // set the user account to be in competition
+
+        // set the user account to be out of competition
         self.user_account.paid_entry_fees=false;
         self.user_account.nft_in_competition=false;
 
