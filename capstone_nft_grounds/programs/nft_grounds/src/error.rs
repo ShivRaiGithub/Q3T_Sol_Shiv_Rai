@@ -2,8 +2,6 @@ use anchor_lang::error_code;
 
 #[error_code]
 pub enum CompetitionError{
-    // #[msg("No Such Competition")]
-    // InvalidCompetition,
     #[msg("Cannot Register right now")]
     CantRegister,
     #[msg("Cannot Vote right now")]

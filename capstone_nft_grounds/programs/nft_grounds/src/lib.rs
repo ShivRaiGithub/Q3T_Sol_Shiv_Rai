@@ -69,9 +69,7 @@ pub mod nft_grounds {
         ctx.accounts.pay_entry_fees()
     }
     
-    // Error here ???
     // user can enter
-    // fee is required to enter
     pub fn enter_competition(ctx: Context<EnterCompetition>) -> Result<()> {
         ctx.accounts.enter()
     }
