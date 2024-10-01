@@ -73,7 +73,7 @@ impl<'info> EnterCompetition<'info>{
         require!(self.user_account.paid_entry_fees==true, UserError::FeesNotPaid);
         // set the user account to be in competition
         self.user_account.nft_in_competition=true;
-        self.user_account.paid_entry_fees==false;
+        self.user_account.paid_entry_fees=false;
 
         // Approve permission to stake account
         let cpi_program = self.token_program.to_account_info();

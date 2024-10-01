@@ -1,0 +1,9 @@
+capstone_nft_grounds$ anchor deploy
+Deploying cluster: https://api.devnet.solana.com
+Upgrade authority: /home/shiv/.config/solana/id.json
+Deploying program "nft_grounds"...
+Program path: ...
+Program Id: 6BWz9DwbdUBWWSQ3TikDJrXX6VrJLRGdB6d8a2CbiwWw
+
+Deploy success
+capstone_nft_grounds$ 
