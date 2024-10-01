@@ -22,7 +22,8 @@ This project is a Blink and Actions-based application that allows users to mint 
 
 ### 4. **capstone_nft_grounds**
 This folder contains my capstone project for the WBA Turbin3 Q3 Builders cohort. The project allows an admin to initialize a marketplace and nft competition. Users can stake their nfts in the competition, vote on them, earn rewards in form of points and use those points as the currency of marketplace to buy the NFTs listed.
-
+   
+App deployed to : 6BWz9DwbdUBWWSQ3TikDJrXX6VrJLRGdB6d8a2CbiwWw
 ## How to Use This Repo
 
 1. **Clone the repo using ```git clone```**:
